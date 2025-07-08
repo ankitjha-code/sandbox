@@ -218,7 +218,7 @@ export default function Component() {
         }, index * 200);
       });
     }
-  }, [currentPage]);
+  }, [currentPage, visibleLogos.length]);
 
   // Handle scroll interactions
   useEffect(() => {
@@ -690,8 +690,9 @@ export default function Component() {
                 {/* Quote and attribution */}
                 <div className="flex-1">
                   <blockquote className="text-2xl font-medium text-gray-800 italic leading-relaxed mb-8">
-                    Cycle is a slick AI tool that enables teams to build better
-                    products by getting smarter on what their customers want.
+                    &quot;Cycle is a slick AI tool that enables teams to build
+                    better products by getting smarter on what their customers
+                    want.&quot;
                   </blockquote>
 
                   <div className="flex items-center gap-4">
