@@ -202,6 +202,7 @@ export default function Component() {
   const [hasScrolled, setHasScrolled] = useState(false);
   const dashboardTopRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [atTop, setAtTop] = useState(true);
 
   // Disable scroll if locked
   useEffect(() => {
@@ -211,6 +212,14 @@ export default function Component() {
       document.body.style.overflow = "auto"; // <- ✅ no return value here
     };
   }, [scrollLocked]);
+  useEffect(() => {
+    const handleScroll = () => {
+      setAtTop(window.scrollY <= 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Animate logos one-by-one on FIRST page load
   useEffect(() => {
@@ -239,7 +248,8 @@ export default function Component() {
     const handleBackScroll = (e: WheelEvent) => {
       if (
         currentPage === 2 &&
-        containerRef.current?.scrollTop <= 0 &&
+        containerRef.current &&
+        containerRef.current.scrollTop <= 0 &&
         e.deltaY < 0
       ) {
         e.preventDefault();
@@ -890,12 +900,7 @@ export default function Component() {
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
             style={{
-              display:
-                typeof window !== "undefined" &&
-                (document.documentElement.scrollTop > 0 ||
-                  document.body.scrollTop > 0)
-                  ? "none"
-                  : "flex",
+              display: atTop ? "flex" : "none",
             }}
           >
             <div className="flex flex-col items-center space-y-2">
