@@ -206,7 +206,10 @@ export default function Component() {
   // Disable scroll if locked
   useEffect(() => {
     document.body.style.overflow = scrollLocked ? "hidden" : "auto";
-    return () => (document.body.style.overflow = "auto");
+
+    return () => {
+      document.body.style.overflow = "auto"; // <- ✅ no return value here
+    };
   }, [scrollLocked]);
 
   // Animate logos one-by-one on FIRST page load
@@ -218,7 +221,7 @@ export default function Component() {
         }, index * 200);
       });
     }
-  }, [currentPage, visibleLogos.length]);
+  }, [currentPage, visibleLogos]);
 
   // Handle scroll interactions
   useEffect(() => {
@@ -451,7 +454,7 @@ export default function Component() {
               exit={{ opacity: 0, y: -50 }}
               transition={{ duration: 0.5 }}
               /// <reference path="" />
-              ref={{ dashboardTopRef }}
+              ref={dashboardTopRef}
               className="min-h-screen grid grid-cols-1 lg:grid-cols-3 gap-8 p-4 sm:p-6 lg:p-8 pb-20 mx-auto"
             >
               {/* Left Sidebar - Video + Logo Grid + Sphere */}
